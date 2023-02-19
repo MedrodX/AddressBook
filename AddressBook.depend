@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1676829645 source:c:\repos\addressbook\main.cpp
+	<iostream>
+	<windows.h>
+	<string>
+	<cstdlib>
+	<fstream>
+	<vector>
+	<sstream>
+	<algorithm>
+
