@@ -2,6 +2,7 @@
 *.d
 *.depend
 *.layout
+*.txt
 # Compiled Object files
 *.slo
 *.lo
