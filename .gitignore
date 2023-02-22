@@ -3,6 +3,7 @@
 *.depend
 *.layout
 *.txt
+*.cbp
 # Compiled Object files
 *.slo
 *.lo

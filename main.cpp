@@ -61,7 +61,7 @@ int getLineInFile(string fileNameTXT)
 void writeAddressToEndFile(Friend friends, string fileName)
 {
     ofstream file;
-    file.open(fileName, std::ios::app);
+    file.open(fileName, ios::app);
     if(file.good())
     {
         file << friends.id << "|";
@@ -83,7 +83,7 @@ void writeAddressToEndFile(Friend friends, string fileName)
 void writeUserToEndFile(User users)
 {
     ofstream file;
-    file.open( "Uzytkownicy.txt", std::ios::app);
+    file.open( "Uzytkownicy.txt", ios::app);
     if(file.good())
     {
         file << users.id << "|";
@@ -103,8 +103,8 @@ void saveFriendsToTempFile(vector<Friend> &friends, int idUser)
 {
     fstream file;
     ofstream temp;
-    file.open( "Adresaci.txt", std::ios::in);
-    temp.open( "Temp.txt", std::ios::out);
+    file.open( "Adresaci.txt", ios::in);
+    temp.open( "Temp.txt", ios::out);
     Friend temporary;
     string line = "";
     int sumOfLine = getLineInFile("Adresaci.txt");
@@ -169,7 +169,9 @@ void saveFriendsToTempFile(vector<Friend> &friends, int idUser)
 void saveUsersToFile(vector<User> &users)
 {
     ofstream file;
-    file.open( "Uzytkownicy.txt", std::ios::out);
+    file.open( "Uzytkownicy.txt", ios::app);
+    file.close();
+    file.open( "Uzytkownicy.txt", ios::out);
     if(file.good())
     {
         for(unsigned int i = 0; i < users.size(); i++)
@@ -190,11 +192,14 @@ void saveUsersToFile(vector<User> &users)
 void getFriendsFromFile(vector<Friend> &friends, int idUser, int &maxID)
 {
     fstream file;
+
+    file.open( "Adresaci.txt", ios::app);
+    file.close();
+
     int sumOfLine = getLineInFile("Adresaci.txt");
     string line = "";
     Friend temporary;
-
-    file.open( "Adresaci.txt", std::ios::in);
+    file.open( "Adresaci.txt", ios::in);
     if(file.good())
     {
         for(int i = 0; i < (sumOfLine - 1); i++)
@@ -232,10 +237,12 @@ void getFriendsFromFile(vector<Friend> &friends, int idUser, int &maxID)
 void getDataFromFile(vector<User> &users)
 {
     fstream file;
+    file.open("Uzytkownicy.txt", ios::app);
+    file.close();
     int sumOfLine = getLineInFile("Uzytkownicy.txt");
     string line = "";
 
-    file.open("Uzytkownicy.txt", std::ios::in);
+    file.open("Uzytkownicy.txt", ios::in);
     if(file.good())
     {
         User temporary;
@@ -397,7 +404,7 @@ void addFriend(vector<Friend> &friends, int idUser, int &maxID)
     }
 }
 
-void searchFriends(vector<Friend> &friends, int &idUser)
+void searchFriends(vector<Friend> &friends)
 {
     string temporary;
     char choice;
@@ -415,7 +422,7 @@ void searchFriends(vector<Friend> &friends, int &idUser)
         cin >> temporary;
         for(unsigned int i = 0; i < friends.size(); i++)
         {
-            if(friends[i].idUser == idUser && friends[i].firstname == temporary)
+            if(friends[i].firstname == temporary)
             {
                 cout <<"Dane adresata: "<< friends[i].id << " " << friends[i].firstname << " " << friends[i].lastname << " " <<friends[i].phoneNumber << " " << friends[i].email << " " <<friends[i].fullAddress << endl;
                 sum++;
@@ -439,7 +446,7 @@ void searchFriends(vector<Friend> &friends, int &idUser)
         cin >> temporary;
         for(unsigned int i = 0; i < friends.size(); i++)
         {
-            if(friends[i].idUser == idUser && friends[i].lastname == temporary)
+            if(friends[i].lastname == temporary)
             {
                 cout <<"Dane adresata: "<< friends[i].id << " " << friends[i].firstname << " " << friends[i].lastname << " " <<friends[i].phoneNumber << " " << friends[i].email << " " <<friends[i].fullAddress << endl;
                 sum++;
@@ -472,7 +479,7 @@ void searchFriends(vector<Friend> &friends, int &idUser)
     }
 }
 
-void viewAllFriends(vector<Friend> &friends, int &idUser)
+void viewAllFriends(vector<Friend> &friends)
 {
     if(friends.size() == 0)
     {
@@ -483,7 +490,7 @@ void viewAllFriends(vector<Friend> &friends, int &idUser)
     {
         for(unsigned int i = 0; i < friends.size(); i++)
         {
-            if(friends[i].idUser == idUser && friends[i].id != 0)
+            if(friends[i].id != 0)
             {
                 cout <<"Dane adresata: "<< friends[i].id << " " << friends[i].firstname << " " << friends[i].lastname << " " <<friends[i].phoneNumber << " " << friends[i].email << " " <<friends[i].fullAddress << endl;
             }
@@ -530,6 +537,8 @@ void usunAdresata(vector<Friend> &friends, int &idUser, int &maxID)
                 }), friends.end());
                 cout << "Poprawnie usunieto osobe z ksiazki" <<endl;
                 saveFriendsToTempFile(friends, idUser);
+                friends.clear();
+                getFriendsFromFile(friends, idUser, maxID);
             }
             default:
             {
@@ -585,67 +594,67 @@ void edytujAdresata(vector<Friend> &friends, int &idUser)
             cout << endl;
             switch(choice)
             {
-            case '1':
-            {
-                cout << "Podaj imie do zmiany: ";
-                cin >> temporary;
-                friends[searchID].firstname = temporary;
-                cout << "Dokonano poprawnej aktualizacji!"<<endl;
-                system("pause");
-                break;
-            }
-            case '2':
-            {
-                cout << "Podaj nazwisko do zmiany: ";
-                cin >> temporary;
-                friends[searchID].lastname = temporary;
-                cout << "Dokonano poprawnej aktualizacji!"<<endl;
-                system("pause");
-                break;
-            }
-            case '3':
-            {
-                cout << "Podaj numer telefonu do zmiany: ";
-                cin >> temporary;
-                friends[searchID].phoneNumber = temporary;
-                cout << "Dokonano poprawnej aktualizacji!"<<endl;
-                system("pause");
-                break;
-            }
-            case '4':
-            {
-                cout << "Podaj email do zmiany: ";
-                cin >> temporary;
-                friends[searchID].email = temporary;
-                cout << "Dokonano poprawnej aktualizacji!"<<endl;
-                system("pause");
-                break;
-            }
+                case '1':
+                {
+                    cout << "Podaj imie do zmiany: ";
+                    cin >> temporary;
+                    friends[searchID].firstname = temporary;
+                    cout << "Dokonano poprawnej aktualizacji!"<<endl;
+                    system("pause");
+                    break;
+                }
+                case '2':
+                {
+                    cout << "Podaj nazwisko do zmiany: ";
+                    cin >> temporary;
+                    friends[searchID].lastname = temporary;
+                    cout << "Dokonano poprawnej aktualizacji!"<<endl;
+                    system("pause");
+                    break;
+                }
+                case '3':
+                {
+                    cout << "Podaj numer telefonu do zmiany: ";
+                    cin >> temporary;
+                    friends[searchID].phoneNumber = temporary;
+                    cout << "Dokonano poprawnej aktualizacji!"<<endl;
+                    system("pause");
+                    break;
+                }
+                case '4':
+                {
+                    cout << "Podaj email do zmiany: ";
+                    cin >> temporary;
+                    friends[searchID].email = temporary;
+                    cout << "Dokonano poprawnej aktualizacji!"<<endl;
+                    system("pause");
+                    break;
+                }
 
-            case '5':
-            {
-                cout << "Podaj adres do zmiany: ";
-                cin.sync();
-                getline(cin, temporary);
-                friends[searchID].fullAddress = temporary;
-                cout << "Dokonano poprawnej aktualizacji!"<<endl;
-                system("pause");
-                break;
-            }
+                case '5':
+                {
+                    cout << "Podaj adres do zmiany: ";
+                    cin.sync();
+                    getline(cin, temporary);
+                    friends[searchID].fullAddress = temporary;
+                    cout << "Dokonano poprawnej aktualizacji!"<<endl;
+                    system("pause");
+                    break;
+                }
 
-            case '6':
-            {
-                cout << "Powrot do menu glownego!" << endl;
-                system("pause");
-                break;
-            }
+                case '6':
+                {
+                    cout << "Powrot do menu glownego!" << endl;
+                    system("pause");
+                    break;
+                }
 
-            default:
-            {
-                cout << "Bledna opcja! Powrot do menu glownego" << endl;
-                system("pause");
-                break;
-            }
+                default:
+                {
+                    cout << "Bledna opcja! Powrot do menu glownego" << endl;
+                    system("pause");
+                    break;
+                }
             }
             saveFriendsToTempFile(friends, idUser);
         }
@@ -680,47 +689,47 @@ void mainMenu(int &idLoggedUser)
 
             switch(choice)
             {
-            case '1':
-            {
-                addFriend(friends, idLoggedUser, maxID);
-                break;
-            }
-            case '2':
-            {
-                searchFriends(friends, idLoggedUser);
-                break;
-            }
-            case '3':
-            {
-                viewAllFriends(friends, idLoggedUser);
-                break;
-            }
-            case '4':
-            {
-                usunAdresata(friends, idLoggedUser, maxID);
-                break;
-            }
-            case '5':
-            {
-                edytujAdresata(friends, idLoggedUser);
-                break;
-            }
-            case '8':
-            {
-                changePassword(idLoggedUser);
-                break;
-            }
-            case '9':
-            {
-                check = 0;
-                break;
-            }
-            default:
-            {
-                cout << "Wpisz poprawna wartosc" << endl;
-                system("pause");
-                break;
-            }
+                case '1':
+                {
+                    addFriend(friends, idLoggedUser, maxID);
+                    break;
+                }
+                case '2':
+                {
+                    searchFriends(friends);
+                    break;
+                }
+                case '3':
+                {
+                    viewAllFriends(friends);
+                    break;
+                }
+                case '4':
+                {
+                    usunAdresata(friends, idLoggedUser, maxID);
+                    break;
+                }
+                case '5':
+                {
+                    edytujAdresata(friends, idLoggedUser);
+                    break;
+                }
+                case '8':
+                {
+                    changePassword(idLoggedUser);
+                    break;
+                }
+                case '9':
+                {
+                    check = 0;
+                    break;
+                }
+                default:
+                {
+                    cout << "Wpisz poprawna wartosc" << endl;
+                    system("pause");
+                    break;
+                }
             }
         }
         else
