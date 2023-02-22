@@ -499,7 +499,7 @@ void viewAllFriends(vector<Friend> &friends)
     }
 }
 
-void usunAdresata(vector<Friend> &friends, int &idUser, int &maxID)
+void deleteAddress(vector<Friend> &friends, int &idUser, int &maxID)
 {
     if(friends.size() == 0)
     {
@@ -555,7 +555,7 @@ void usunAdresata(vector<Friend> &friends, int &idUser, int &maxID)
     }
 }
 
-void edytujAdresata(vector<Friend> &friends, int &idUser)
+void editAddress(vector<Friend> &friends, int &idUser)
 {
     if(friends.size() == 0)
     {
@@ -706,12 +706,12 @@ void mainMenu(int &idLoggedUser)
                 }
                 case '4':
                 {
-                    usunAdresata(friends, idLoggedUser, maxID);
+                    deleteAddress(friends, idLoggedUser, maxID);
                     break;
                 }
                 case '5':
                 {
-                    edytujAdresata(friends, idLoggedUser);
+                    editAddress(friends, idLoggedUser);
                     break;
                 }
                 case '8':
